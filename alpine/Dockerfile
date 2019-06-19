@@ -4,12 +4,16 @@ LABEL maintainer="Florian JUDITH <florian.judith.b@gmail.com>"
 
 ARG VERSION=10.7.7
 
+COPY embed2js.patch /tmp/
+
 RUN apk add \
     openjdk8 apache-ant git patch xmlstarlet certbot curl && \
     cd /tmp && \
     curl -OL https://github.com/jgraph/draw.io/archive/v${VERSION}.zip && \
     unzip v${VERSION}.zip && \
     cd /tmp/drawio-${VERSION} && \
+    mv /tmp/embed2js.patch . && \
+    patch -p1 < embed2js.patch && \
     cd /tmp/drawio-${VERSION}/etc/build && \
     ant war && \
     cd /tmp/drawio-${VERSION}/build && \

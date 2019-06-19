@@ -1,0 +1,45 @@
+diff --git a/etc/build/build.xml b/etc/build/build.xml
+index 3c80e980..3ce162c9 100644
+--- a/etc/build/build.xml
++++ b/etc/build/build.xml
+@@ -401,7 +401,7 @@
+ 
+ 	<target name="javac" depends="app" description="Java compilation">
+ 		<mkdir dir="${javac.dir}"/>
+-		<javac includeantruntime="false" srcdir="${src.dir}" excludes="**/EmbedServlet2.java" destdir="${javac.dir}">
++		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${javac.dir}">
+ 			<classpath refid="javac.class.path" />
+ 		</javac>
+ 		<copy todir="${javac.dir}" file="${src.dir}/log4j.properties" />
+diff --git a/src/main/java/com/mxgraph/online/EmbedServlet2.java b/src/main/java/com/mxgraph/online/EmbedServlet2.java
+index 469d3771..82477242 100644
+--- a/src/main/java/com/mxgraph/online/EmbedServlet2.java
++++ b/src/main/java/com/mxgraph/online/EmbedServlet2.java
+@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
+ 
+ import org.apache.commons.lang3.StringEscapeUtils;
+ 
+-import com.google.appengine.api.utils.SystemProperty;
++//import com.google.appengine.api.utils.SystemProperty;
+ 
+ /**
+  * Servlet implementation class OpenServlet
+@@ -84,7 +84,7 @@ public class EmbedServlet2 extends HttpServlet
+ 	{
+ 		if (lastModified == null)
+ 		{
+-			// Uses deployment date as lastModified header
++			/*// Uses deployment date as lastModified header
+ 			String applicationVersion = SystemProperty.applicationVersion.get();
+ 			Date uploadDate = new Date(Long
+ 					.parseLong(applicationVersion
+@@ -93,7 +93,8 @@ public class EmbedServlet2 extends HttpServlet
+ 
+ 			DateFormat httpDateFormat = new SimpleDateFormat(
+ 					"EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+-			lastModified = httpDateFormat.format(uploadDate);
++			lastModified = httpDateFormat.format(uploadDate);*/
++			lastModified = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US).format(new Date());
+ 		}
+ 
+ 		initLibraries(libraries);
