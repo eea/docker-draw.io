@@ -2,7 +2,7 @@ FROM tomcat:9-jre8-alpine
 
 LABEL maintainer="Florian JUDITH <florian.judith.b@gmail.com>"
 
-ARG VERSION=10.7.7
+ARG VERSION=11.2.8
 
 COPY embed2js.patch /tmp/
 
