@@ -1,21 +1,42 @@
-FROM openjdk:11-jdk-slim AS build
-
-RUN apt-get update -y && \
 # this solves some weird issue with openjdk-11-jdk-headless
 # https://github.com/nextcloud/docker/issues/380
-    mkdir -p /usr/share/man/man1 && \
-    apt-get install -y \
+FROM openjdk:11-jdk-slim AS build
+
+ARG VERSION
+
+
+
+RUN apt-get update -y \
+    && mkdir -p /usr/share/man/man1 \
+    && apt-get install -y \
         ant \
-        git
+        git \
+    && cd /tmp \
+    && git clone --depth 1 --branch "v${VERSION}" https://github.com/jgraph/drawio.git
 
-RUN cd /tmp && \
-    git clone https://github.com/jgraph/drawio.git && \
-    cd /tmp/drawio/etc/build/ && \
-    ant war
+WORKDIR /tmp/drawio/etc/build/
+RUN ant war
 
+
+# Final image
 FROM tomcat:9-jre11-slim
 
-LABEL maintainer="JGraph Ltd"
+LABEL maintainer="Florian JUDITH <florian.judith.b@gamil.com"
+
+ARG VCS_REF
+ARG VERSION
+ARG BUILD_DATE
+
+LABEL maintainer="Florian JUDITH <florian.judith.b@gmail.com>" \
+      org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Draw.io" \
+      org.label-schema.description="diagrams.net, previously draw.io, is an online diagramming web site that delivers the source in this project" \
+      org.label-schema.url="https://diagrams.net" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/fjudith/docker-draw.io" \
+      org.label-schema.vendor="diagrams.net" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
 
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
@@ -46,7 +67,7 @@ RUN mkdir -p $CATALINA_HOME/webapps/draw && \
         conf/server.xml
 
 # Copy docker-entrypoint
-COPY docker-entrypoint.sh /
+COPY scripts/docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
 WORKDIR $CATALINA_HOME
