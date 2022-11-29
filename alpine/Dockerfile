@@ -1,7 +1,7 @@
 FROM tomcat:9-jre8-alpine
 
 ARG VCS_REF
-ARG VERSION
+ARG VERSION=20.6.0
 ARG BUILD_DATE
 
 LABEL maintainer="Florian JUDITH <florian.judith.b@gmail.com>" \
@@ -20,7 +20,7 @@ COPY files/embed2js.patch /tmp/
 RUN apk add --no-cache \
     openjdk8 apache-ant git patch xmlstarlet certbot curl && \
     cd /tmp && \
-    git clone --depth=1 https://github.com/jgraph/drawio.git && \
+    git clone --depth 1 --branch "v${VERSION}" https://github.com/jgraph/drawio.git && \
     cd /tmp/drawio && \
     mv /tmp/embed2js.patch . && \
     patch -p1 < embed2js.patch && \
