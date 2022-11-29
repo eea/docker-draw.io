@@ -1,30 +1,17 @@
-diff --git a/etc/build/build.xml b/etc/build/build.xml
-index 17db1c8..476690a 100644
---- a/etc/build/build.xml
-+++ b/etc/build/build.xml
-@@ -466,7 +466,7 @@
- 
- 	<target name="javac" description="Java compilation">
- 		<mkdir dir="${javac.dir}"/>
--		<javac includeantruntime="false" srcdir="${src.dir}" excludes="**/EmbedServlet2.java" destdir="${javac.dir}">
-+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${javac.dir}">
- 			<classpath refid="javac.class.path" />
- 		</javac>
- 		<copy todir="${javac.dir}" file="${src.dir}/log4j.properties" />
 diff --git a/src/main/java/com/mxgraph/online/EmbedServlet2.java b/src/main/java/com/mxgraph/online/EmbedServlet2.java
-index de9ba6e..967b678 100644
+index e390c40..a1db72d 100644
 --- a/src/main/java/com/mxgraph/online/EmbedServlet2.java
 +++ b/src/main/java/com/mxgraph/online/EmbedServlet2.java
-@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
+@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  
  import org.apache.commons.text.StringEscapeUtils;
  
 -import com.google.appengine.api.utils.SystemProperty;
 +//import com.google.appengine.api.utils.SystemProperty;
  
- /**
-  * Servlet implementation class OpenServlet
-@@ -84,7 +84,7 @@ public class EmbedServlet2 extends HttpServlet
+ import com.mxgraph.online.Utils.SizeLimitExceededException;
+ 
+@@ -88,7 +88,7 @@ public class EmbedServlet2 extends HttpServlet
  	{
  		if (lastModified == null)
  		{
@@ -33,7 +20,7 @@ index de9ba6e..967b678 100644
  			String applicationVersion = SystemProperty.applicationVersion.get();
  			Date uploadDate = new Date(Long
  					.parseLong(applicationVersion
-@@ -93,7 +93,8 @@ public class EmbedServlet2 extends HttpServlet
+@@ -97,7 +97,8 @@ public class EmbedServlet2 extends HttpServlet
  
  			DateFormat httpDateFormat = new SimpleDateFormat(
  					"EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
