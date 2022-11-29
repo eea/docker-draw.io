@@ -1,10 +1,3 @@
-![Build Image](https://github.com/fjudith/docker-draw.io/workflows/Build%20Image/badge.svg)
-[![Get your own image badge on microbadger.com](https://images.microbadger.com/badges/image/fjudith/draw.io.svg)](https://microbadger.com/images/fjudith/draw.io)
-[![Docker Repository on Quay](https://quay.io/repository/fjudith/draw.io/status "Docker Repository on Quay")](https://quay.io/repository/fjudith/draw.io)
-
-[latest](https://github.com/fjudith/docker-draw.io/tree/master/debian)
-[alpine](https://github.com/fjudith/docker-draw.io/tree/master/alpine)
-
 ## Introduction
 
 [draw.io](https://github.com/jgraph/draw.io) (formerly Diagramly) is free online diagram software. You can use it as a flowchart maker, network diagram software, to create UML online, as an ER diagram tool, to design database schema, to build BPMN online, as a circuit diagram maker, and more. draw.io can import .vsdx, Gliffy™ and Lucidchart™ files.
