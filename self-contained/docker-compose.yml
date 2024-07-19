@@ -7,7 +7,7 @@ services:
     networks:
       - drawionet
     volumes:
-      - ./fonts:/usr/share/fonts/drawio
+      - fonts_volume:/usr/share/fonts/drawio
   image-export:
     image: jgraph/export-server
     expose:
@@ -15,29 +15,47 @@ services:
     networks:
       - drawionet
     volumes:
-      - ./fonts:/usr/share/fonts/drawio
+      - fonts_volume:/usr/share/fonts/drawio
+    environment:
+      - DRAWIO_BASE_URL=${DRAWIO_BASE_URL}
   drawio:
     image: jgraph/drawio
     ports:
       - "8443:8443"
       - "8080:8080"
+    links:
+      - plantuml-server:plantuml-server
+      - image-export:image-export
     depends_on:
       - plantuml-server
       - image-export
     networks:
       - drawionet
-    volumes:
-      - ./config/PostConfig.js:/usr/local/tomcat/webapps/draw/js/PostConfig.js
-      - ./config/PreConfig.js:/usr/local/tomcat/webapps/draw/js/PreConfig.js
-      - ./config/cloud_convert_api_key:/usr/local/tomcat/webapps/draw/WEB-INF/cloud_convert_api_key
-      - ./config/google_client_id:/usr/local/tomcat/webapps/draw/WEB-INF/google_client_id
-      - ./config/google_client_redirect_uri:/usr/local/tomcat/webapps/draw/WEB-INF/google_client_redirect_uri
-      - ./config/google_client_secret:/usr/local/tomcat/webapps/draw/WEB-INF/google_client_secret
-      - ./config/msgraph_client_id:/usr/local/tomcat/webapps/draw/WEB-INF/msgraph_client_id
-      - ./config/msgraph_client_redirect_uri:/usr/local/tomcat/webapps/draw/WEB-INF/msgraph_client_redirect_uri
-      - ./config/msgraph_client_secret:/usr/local/tomcat/webapps/draw/WEB-INF/msgraph_client_secret
     environment:
+      - DRAWIO_SELF_CONTAINED=1
       - PLANTUML_URL=http://plantuml-server:8080/
       - EXPORT_URL=http://image-export:8000/
+      - DRAWIO_BASE_URL=${DRAWIO_BASE_URL}
+      - DRAWIO_SERVER_URL=${DRAWIO_SERVER_URL}
+      - DRAWIO_CSP_HEADER=${DRAWIO_CSP_HEADER}
+      - DRAWIO_VIEWER_URL=${DRAWIO_VIEWER_URL}
+      - DRAWIO_LIGHTBOX_URL=${DRAWIO_LIGHTBOX_URL}
+      - DRAWIO_CONFIG=${DRAWIO_CONFIG}
+      - DRAWIO_GOOGLE_CLIENT_ID=${DRAWIO_GOOGLE_CLIENT_ID}
+      - DRAWIO_GOOGLE_APP_ID=${DRAWIO_GOOGLE_APP_ID}
+      - DRAWIO_GOOGLE_CLIENT_SECRET=${DRAWIO_GOOGLE_CLIENT_SECRET}
+      - DRAWIO_GOOGLE_VIEWER_CLIENT_ID=${DRAWIO_GOOGLE_VIEWER_CLIENT_ID}
+      - DRAWIO_GOOGLE_VIEWER_APP_ID=${DRAWIO_GOOGLE_VIEWER_APP_ID}
+      - DRAWIO_GOOGLE_VIEWER_CLIENT_SECRET=${DRAWIO_GOOGLE_VIEWER_CLIENT_SECRET}
+      - DRAWIO_MSGRAPH_CLIENT_ID=${DRAWIO_MSGRAPH_CLIENT_ID}
+      - DRAWIO_MSGRAPH_CLIENT_SECRET=${DRAWIO_MSGRAPH_CLIENT_SECRET}
+      - DRAWIO_MSGRAPH_TENANT_ID=${DRAWIO_MSGRAPH_TENANT_ID}
+      - DRAWIO_GITLAB_ID=${DRAWIO_GITLAB_ID}
+      - DRAWIO_GITLAB_SECRET=${DRAWIO_GITLAB_SECRET}
+      - DRAWIO_GITLAB_URL=${DRAWIO_GITLAB_URL}
+      - DRAWIO_CLOUD_CONVERT_APIKEY=${DRAWIO_CLOUD_CONVERT_APIKEY}
 networks:
   drawionet:
+
+volumes:
+  fonts_volume:
